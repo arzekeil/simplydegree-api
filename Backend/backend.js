@@ -6,18 +6,20 @@ Last Updated: 2022-04-03
 // Imports (requirements)
 import express, { urlencoded } from 'express';
 const app = express().use(urlencoded({ extended: true }));
-import { join } from 'path';
 import { request } from 'http';
-import { readFileSync } from 'fs';
 import { MongoClient } from 'mongodb';
+import 'dotenv/config';
 
 
 // Global constants
-const port = 3000;
-const fileName = "secret.txt";
 const authApiHost = "example.com";
 const authApiPath = "/somepath";
 const doAuthCheck = false; // override authentication
+
+// Handling difference in port for testing env vs. dynamic
+// port assigned by Heroku in env variables
+var port = process.env.PORT;
+if (port == null || port == "") port = 3000;
 
 // userVerify function
 // handles the communication with the authentication server
@@ -61,12 +63,11 @@ var taskCol;
 // fetching credentials from secret.txt
 var creds;
 try {
-  file = readFileSync(join(__dirname, fileName));
-  creds = file.toString();
+  creds = process.env.LOGIN
 }
 catch(err) {
   console.log(err);
-  stop();
+  process.exit(1)
 }
 const uri = "mongodb+srv://" + creds + "@cluster0.raicx.mongodb.net/simply-degree?retryWrites=true&w=majority";
 
@@ -110,9 +111,9 @@ Modifications:
 2022-04-03 - Documentation and code clean-up - Jessie Newman
 */
 app.get('/courses/:courseID', (req, res) => {
-  id = req.params.courseID;
+  var id = req.params.courseID;
   // attempt to get document matching this courseID
-  result = courseCol.findOne({'course_id':id});
+  var result = courseCol.findOne({'course_id':id});
   result.then(data => {
     if(data) {
       res.status(200).send(JSON.stringify(data));
@@ -155,14 +156,14 @@ Modifications:
 2022-04-03 - Documentation and code clean-up - Jessie Newman
 */
 app.get('/courses/prereq/:courseID1/:courseID2', (req, res) => {
-  id1 = req.params.courseID1;
-  id2 = req.params.courseID2;
+  var id1 = req.params.courseID1;
+  var id2 = req.params.courseID2;
 
-  course1 = null;
-  course2 = null;
+  var course1 = null;
+  var course2 = null;
 
   // get the first course from the database
-  result = courseCol.findOne({'course_id':id1});
+  var result = courseCol.findOne({'course_id':id1});
   result.then(course1 => {
     // if course1 was returned
     if(course1) {
@@ -235,18 +236,18 @@ app.get('/events/:userID/:year/:month', (req, res) => {
       res.status(403).send("Error: not authorized");
       return;
     }
-    result = []; // initialize as empty array
+    var result = []; // initialize as empty array
     // getting params
-    id = req.params.userID;
-    year = req.params.year;
-    month = req.params.month;
+    var id = req.params.userID;
+    var year = req.params.year;
+    var month = req.params.month;
     // finding start time and end time of this month
-    timeStart = new Date(year, month);
-    timeEnd = new Date(year, month + 1) - 1; // start of next month, minus 1 millisecond
+    var timeStart = new Date(year, month);
+    var timeEnd = new Date(year, month + 1) - 1; // start of next month, minus 1 millisecond
 
     // find events for this user that start sometime before the end of this month,
     // and end sometime after the start of this month
-    cursor = eventCol.find({"user_id":id, "event_start":{"$lte":timeEnd}, "event_end":{"$gte":timeStart}});
+    var cursor = eventCol.find({"user_id":id, "event_start":{"$lte":timeEnd}, "event_end":{"$gte":timeStart}});
     cursor.forEach(doc => {
       // for every document matching the conditions:
       console.log(doc);
@@ -331,8 +332,8 @@ app.post('/events/:userID/update', (req, res) => {
       res.status(403).send("Error: not authorized");
       return;
     }
-    uid = req.params.userID;
-    eid = req.params.eventID;
+    var uid = req.params.userID;
+    var eid = req.params.eventID;
 
     eventCol.replaceOne({'user_id':uid, 'event_id':eid}, req.body, (err) => {
       if(err) {
@@ -374,8 +375,8 @@ app.delete('/events/:userID/:eventID', (req, res) => {
       res.status(403).send("Error: not authorized");
       return;
     }
-    uid = req.params.userID;
-    eid = req.params.eventID;
+    var uid = req.params.userID;
+    var eid = req.params.eventID;
 
     eventCol.deleteOne({'user_id':uid, 'event_id':eid}, (err) => {
       if(err) {
