@@ -21,6 +21,15 @@ const doAuthCheck = false; // override authentication
 var port = process.env.PORT;
 if (port == null || port == "") port = 3000;
 
+// Allowing cross-origin resource sharing (CORS)
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+}
+app.use(allowCrossDomain);
+
 // userVerify function
 // handles the communication with the authentication server
 // to ensure the request is coming from the claimed user
