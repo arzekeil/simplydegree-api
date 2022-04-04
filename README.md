@@ -1,7 +1,8 @@
 # simplydegree-api
-The api to be used with the simply degree frontend
-[Link to Simply Degree API](https://simply-degree.herokuapp.com/)  
+The api to be used with the simply degree frontend  
 
+If you want to access the Simply Degree API follow this path: [Link to Simply Degree API](https://simply-degree.herokuapp.com/)  
+Try a sample query: https://simply-degree.herokuapp.com/courses/CP317  
 
 # How to install and run
 Prof. Zia Ud Din: our project will be hosted on the internet, and this is the simplest way to test the running capabilities of our application. Running locally requires reconfiguration that may take more time to get working, so we recommend using our hosted website, but if you wish to locally install details are provided below
