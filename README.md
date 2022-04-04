@@ -1,7 +1,7 @@
 # simplydegree-api
 The api to be used with the simply degree frontend  
 
-If you want to access the Simply Degree API follow this path: [Link to Simply Degree API](https://simply-degree.herokuapp.com/)  
+If you want to access the Simply Degree API follow this path: https://simply-degree.herokuapp.com/  
 Try a sample query: https://simply-degree.herokuapp.com/courses/CP317  
 
 # How to install and run
