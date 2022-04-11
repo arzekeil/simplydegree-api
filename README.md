@@ -8,6 +8,9 @@ To Try Simply Degree follow this link: https://simplydegree.web.app/login
 If you want to access the Simply Degree API follow this link: https://simply-degree.herokuapp.com/  
 Try a sample query: https://simply-degree.herokuapp.com/courses/CP317  
 
+## Example Response
+![Screenshot in Nightingale REST Client](/Screenshot.png)
+  
 # How to install and run
 Prof. Zia Ud Din: our project will be hosted on the internet, and this is the simplest way to test the running capabilities of our application. Running locally requires reconfiguration that may take more time to get working, so we recommend using our hosted website, but if you wish to locally install details are provided below
 
